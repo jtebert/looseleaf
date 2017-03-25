@@ -9,8 +9,14 @@ from notes.utils import pkgen
 # Let's add some functionality, bitches
 
 class Color(models.Model):
+    TEXT_COLOR_CHOICES = [
+        ('dark', 'Dark'),
+        ('light', 'Light'),
+    ]
+
     name = models.CharField(max_length=127)
     hex = models.CharField(max_length=6)
+    text_color = models.CharField(max_length=10, choices=TEXT_COLOR_CHOICES, default=0)
 
     def __str__(self):
         return self.name

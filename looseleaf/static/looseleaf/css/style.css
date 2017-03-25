@@ -1,0 +1,55 @@
+body {
+    font-weight: 300;
+}
+
+
+/** NAVBAR **/
+
+.navbar-brand {
+    padding: 10px 15px;
+    font-size: 22px;
+}
+
+#logo {
+    height: 100%;
+    display: inline-block;
+}
+
+.navbar-nav i.fa {
+    padding-right: 12px;
+}
+.dropdown-menu {
+    border: none;
+}
+
+/** FOOTER **/
+
+footer {
+    font-family: "Work Sans", sans-serif;
+    //font-weight: 600;
+    color: #999;
+}
+footer .nav {
+    float: none;
+    display: inline-block;
+    color: #999;
+}
+footer .nav a {
+    color: #999;
+}
+footer .nav > li > a:hover {
+    background-color: transparent;
+    //color: #DF3331;
+}
+footer div {
+    text-align: center;
+}
+
+
+/** FORMS **/
+
+.color-sample {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+}

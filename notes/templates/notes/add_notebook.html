@@ -1,0 +1,12 @@
+{% extends 'looseleaf/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ notebook_form.title }}<br/>
+        {{ notebook_form.color }}<br/>
+        {{ notebook_form.collaborators }}<br/>
+        <input type="submit">
+    </form>
+{% endblock %}

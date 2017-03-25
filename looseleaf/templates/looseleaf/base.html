@@ -1,18 +1,122 @@
+{% load staticfiles notebook_dropdown %}
+
 <!DOCTYPE html>
-
-{% load staticfiles %}
-
-<html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
 <head>
-    <title>Looseleaf</title>
-    <link rel="stylesheet" type="text/css"  href="{% static 'looseleaf/fonts/fonts.css' %}" />
-    <link rel="stylesheet" type="text/css"  href="{% static 'looseleaf/css/style.css' %}" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>
+        {% block title %}{% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}{% endblock %}
+                {% block title_suffix %}{% endblock %}</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'looseleaf/bootstrap/theme.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'looseleaf/fonts/fonts.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'looseleaf/css/style.css' %}"/>
     <!--<link rel="stylesheet" type="text/css" href="{% static 'looseleaf/jquery-ui/jquery-ui.min.css' %}"/>-->
     <link rel="stylesheet" type="text/css" href="{% static 'looseleaf/font-awesome/css/font-awesome.min.css' %}"/>
-    <!--<link rel="shortcut icon" href="{% static 'looseleaf/images/favicon.ico' %}"/>-->
+    <link rel="shortcut icon" href="{% static 'looseleaf/images/favicon.ico' %}"/>
+
     {% block extra_head %}{% endblock %}
+
 </head>
 
+<body class="{% block body_class %}{% endblock %}">
+
+<!-- Nav bar -->
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/"><img id="logo" src="{% static 'looseleaf/images/logo.png' %}"/>
+                    Looseleaf</a>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse taller">
+            {% if user.is_authenticated %}
+                <ul class="nav navbar-nav navbar-right">
+                    {% notebook_dropdown current_page=self %}
+
+                    <!--<li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" -href="#"><i class="fa fa-book"></i>Notebooks</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Item 1</a></li>
+                            <li><a href="#">Item 1</a></li>
+                            <li><a href="#">Item 1</a></li>
+                            <li><a href="#">Item 1</a></li>
+                        </ul>
+                    </li>-->
+
+                    <li><a href="{% url 'userena_profile_detail' user.username %}"><i class="fa fa-user"></i>
+                        {% if user.first_name %}
+                            {{ user.first_name }}
+                        {% else %}
+                            {{ user }}
+                        {% endif %}
+                    </a></li>
+                </ul>
+            {% endif %}
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+<div class="container content-wrapper">
+    {% block content %}
+        {# Main content of the page #}
+    {% endblock %}
+</div>
+
+{% block footer %}
+    <div class="container">
+        <footer>
+            <hr>
+            <div class="wrap">
+                <ul class="nav navbar-nav footer-nav">
+                    <li><a href="{% url 'notes:index' %}">Home</a></li>
+                    {% comment %}<li><a href="{% slugurl 'contact' %}">Contact</a></li>{% endcomment %}
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-md-12"><p>&copy; {% now "Y" %} Looseleaf, MLE</p></div>
+            </div>
+        </footer>
+    </div>
+{% endblock %}
+
+{# Global javascript #}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<!--ipt src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!--<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>-->
+<script src="{% static 'looseleaf/bootstrap/js/bootstrap.min.js' %}"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+{% block extra_js %}
+    {# Override this in templates to add extra javascript #}
+{% endblock %}
+
+</body>
+</html>
+
+{% comment %}
+<html>
 <body>
     <div id="container">
         {% block header %}
@@ -65,10 +169,6 @@
         </div>
     </div>
 
-    <!-- JavaScript files -->
-    <script src="{% static 'looseleaf/jquery-ui/external/jquery/jquery.js' %}"></script>
-    <script src="{% static 'looseleaf/jquery-ui/jquery-ui.min.js' %}"></script>
-    {% block extra_js %}{% endblock %}
-
     </body>
 </html>
+{% endcomment %}

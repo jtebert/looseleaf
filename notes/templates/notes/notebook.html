@@ -6,14 +6,8 @@ Test
 {% endblock %}
 
 {% block content %}
-    <p>This page has a list of the notebooks on it</p>
-    <p>I think it would be cool to make the icon for each of them a leaf in the color of the notebook</p>
-
-    <ul>
-        {% for n in notebooks %}
-            <li><a href="{% url 'notes:notebook' pk=n.pk %}">{{ n.title }}</a></li>
-        {% endfor %}
-    </ul>
+    <p>This page will have the notes of a given notebook on it, in the cool block/masonry format.</p>
+    <p>It's where the bulk of the functionality will lie</p>
 {% endblock %}
 
 {% block extra_js %}

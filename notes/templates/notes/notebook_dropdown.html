@@ -1,0 +1,12 @@
+{# List of notebooks in dropdown menu #}
+<li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" role="button" -href="#"><i class="fa fa-book"></i>Notebooks</a>
+    <ul class="dropdown-menu">
+        {% for n in menuitems %}
+            <li><a href="{% url 'notes:notebook' pk=n.pk %}">{{ n.title }}</a></li>
+            {# TODO: add notebook colors #}
+        {% endfor %}
+        <li role="separator" class="divider"></li>
+        <li><a href="{% url 'notes:add_notebook' %}"><i class="fa fa-plus"></i>Add Notebook</a></li>
+    </ul>
+</li>
