@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'guardian',
     'easy_thumbnails',
     'accounts',
+    # Extra
+    'django_markdown',
     # Internal stuff
     'notes',
     'looseleaf'
@@ -162,3 +164,6 @@ LOGOUT_URL = '/accounts/signout/'
 
 
 SITE_ID = 1
+
+# Markdown
+MARKDOWN_EXTENSIONS = ['extra', 'codehilite', 'footnotes', 'fenced_code', 'tables']

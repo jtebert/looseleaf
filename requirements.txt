@@ -2,10 +2,12 @@ appdirs==1.4.3
 dj-database-url==0.4.2
 Django==1.8
 django-guardian==1.4.1
+django-markdown==0.8.4
 django-userena==2.0.1
 easy-thumbnails==2.3
 gunicorn==19.7.1
 html2text==2014.12.29
+Markdown==2.6.6
 olefile==0.44
 packaging==16.8
 Pillow==4.0.0

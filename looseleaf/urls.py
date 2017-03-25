@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^', include('notes.urls', namespace="notes")),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('userena.urls')),
+    url('^markdown/', include('django_markdown.urls')),
 ]

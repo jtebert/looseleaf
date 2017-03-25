@@ -5,6 +5,8 @@ from django.db import models
 from accounts.models import UserProfile
 from notes.utils import pkgen
 
+from django_markdown.models import MarkdownField
+
 # Create your models here.
 # Let's add some functionality, bitches
 
@@ -31,11 +33,10 @@ class Notebook(models.Model):
         return self.title
 
 class Note(models.Model):
-    id = models.CharField(max_length=255, primary_key=True, default=pkgen(255))
+    id = models.CharField(max_length=32, primary_key=True, default=pkgen(32))
     notebook = models.ForeignKey(Notebook)
     # Note content
-    title = models.CharField(max_length=255, blank=True)
-    note_content = models.TextField(blank=True)
+    content = MarkdownField(blank=True)
     # Positioning in grid
     x_pos = models.IntegerField()
     y_pos = models.IntegerField()

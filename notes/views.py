@@ -1,12 +1,13 @@
+import json
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 
 from notes.utils import profile_from_request
-from notes.models import Notebook
+from notes.models import Notebook, Color, Note
 from notes.forms import NotebookForm
 
 # Create your views here.
@@ -66,3 +67,58 @@ def add_notebook(request):
             'notebook_form': notebook_form,
         }
     )
+
+
+def add_note(request):
+    # Add a new note to the notebook
+    if request.method == 'POST':
+        response_data = {}
+        note = Note(
+            notebook=Notebook.objects.get(pk=request.POST.get('notebook')),
+            x_pos=request.POST.get('x'),
+            y_pos=request.POST.get('y'),
+            width=request.POST.get('width'),
+            height=request.POST.get('height'),
+            color=Color.objects.get(pk=request.POST.get('color')),
+            content=request.POST.get('content_raw')
+        )
+        note.save()
+        response_data['x'] = note.x_pos
+        response_data['y'] = note.y_pos
+        response_data['width'] = note.width
+        response_data['height'] = note.height
+        response_data['id'] = note.pk
+        response_data['color'] = note.color.hex
+        response_data['text_color'] = note.color.text_color
+        response_data['content_html'] = note.content
+
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+
+def edit_note(request):
+    # Edit an existing note in the notebook
+    if request.method == 'POST':
+        response_data = {}
+        note = Note.objects.get(pk=request.POST.get('id'))
+        note.x_pos = request.POST.get('x')
+        note.y_pos = request.POST.get('y')
+        note.width = request.POST.get('width')
+        note.height = request.POST.get('height')
+        note.color = Color.objects.get(pk=request.POST.get('color'))
+        note.content = request.POST.get('content_raw')
+        note.save()
+        response_data['x'] = note.x_pos
+        response_data['y'] = note.y_pos
+        response_data['width'] = note.width
+        response_data['height'] = note.height
+        response_data['id'] = note.pk
+        response_data['color'] = note.color.hex
+        response_data['text_color'] = note.color.text_color
+        response_data['content_html'] = note.content
+
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
