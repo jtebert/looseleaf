@@ -8,7 +8,7 @@ class ColorModelChoiceField(forms.ModelChoiceField):
 
 class NotebookForm(forms.ModelForm):
     color = ColorModelChoiceField(widget=forms.RadioSelect,
-                                  queryset=Color.objects.all(),
+                                  queryset=Color.objects.order_by('hex'),
                                   required=True,
                                   empty_label=None)
 

@@ -25,7 +25,7 @@ class Color(models.Model):
 
 class Notebook(models.Model):
     owner = models.ForeignKey(UserProfile)
-    collaborators = models.ManyToManyField(UserProfile, related_name='collaborators')
+    collaborators = models.ManyToManyField(UserProfile, related_name='collaborators', blank=True, null=True)
     title = models.CharField(max_length=255)
     color = models.ForeignKey(Color)
 

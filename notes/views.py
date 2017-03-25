@@ -28,6 +28,7 @@ def notebook(request, pk):
     # Page view for a specific notebook
     # Bulk of functionality goes here
     notebook = Notebook.objects.get(pk=pk)
+    notes = Note.objects.filter(notebook=notebook)
     profile = profile_from_request(request)
     form = NoteForm()
 
