@@ -1,6 +1,6 @@
 import json
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 
 from notes.utils import profile_from_request
 from notes.models import Notebook, Color, Note
-from notes.forms import NotebookForm
+from notes.forms import NotebookForm, NoteForm
 
 # Create your views here.
 def index(request):
@@ -27,9 +27,9 @@ def index(request):
 def notebook(request, pk):
     # Page view for a specific notebook
     # Bulk of functionality goes here
-    # TODO: restrict access based on collaborators
     notebook = Notebook.objects.get(pk=pk)
     profile = profile_from_request(request)
+    form = NoteForm()
 
     # Get list of collaborators + owner of notebook
     # Check if current user is in list
@@ -40,6 +40,7 @@ def notebook(request, pk):
             {
                 'notebook': notebook,
                 'profile': profile,
+                'form': form,
             }
         )
     else:
@@ -92,10 +93,7 @@ def add_note(request):
         response_data['text_color'] = note.color.text_color
         response_data['content_html'] = note.content
 
-        return HttpResponse(
-            json.dumps(response_data),
-            content_type="application/json"
-        )
+        return JsonResponse(response_data)
 
 def edit_note(request):
     # Edit an existing note in the notebook
@@ -118,7 +116,4 @@ def edit_note(request):
         response_data['text_color'] = note.color.text_color
         response_data['content_html'] = note.content
 
-        return HttpResponse(
-            json.dumps(response_data),
-            content_type="application/json"
-        )
+        return JsonResponse(response_data)

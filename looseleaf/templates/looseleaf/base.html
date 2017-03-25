@@ -48,21 +48,13 @@
                 <ul class="nav navbar-nav navbar-right">
                     {% notebook_dropdown current_page=self %}
 
-                    <!--<li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" -href="#"><i class="fa fa-book"></i>Notebooks</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Item 1</a></li>
-                            <li><a href="#">Item 1</a></li>
-                            <li><a href="#">Item 1</a></li>
-                            <li><a href="#">Item 1</a></li>
-                        </ul>
-                    </li>-->
+                    <li><a href="{% url 'userena_profile_detail' user.username %}">
+                        {% if profile.get_mugshot_url %}
+                            <img src="{{ profile.get_mugshot_url }}" class="user-icon"/>
 
-                    <li><a href="{% url 'userena_profile_detail' user.username %}"><i class="fa fa-user"></i>
-                        {% if user.first_name %}
-                            {{ user.first_name }}
                         {% else %}
-                            {{ user }}
+
+                            <i class="fa fa-user-circle user-icon"></i>
                         {% endif %}
                     </a></li>
                 </ul>
@@ -114,61 +106,3 @@
 
 </body>
 </html>
-
-{% comment %}
-<html>
-<body>
-    <div id="container">
-        {% block header %}
-        <div id="header-compact">
-            <div id="nav-compact">
-                <p id="user-info">
-                    {% if user.is_authenticated %}
-                        "Hello,"<b>{{ user.username }}</b>. <a href="{% url 'userena_signout' %}">"Sign out"</a>
-                    {% else %}
-                    <a href="{% url 'userena_signin' %}">Sign in</a>
-                    {% endif %}
-                </p>
-                <ul>
-                    <li class="menu-item"><a href="{% url 'notesindex' %}">
-                        <div class="img" id="home_img"></div>
-                        <h4>"Home"</h4>
-                    </a></li>
-                    {% if user.is_authenticated %}
-                        <li class="menu-item"><a href="{% url 'notes:recipe_list' %}">
-                            <div class="img" id="recipes_img"></div>
-                            <h4>"Notes"</h4>
-                        </a></li>
-                        <li class="menu-item"><a href="{% url 'notes:box_list' %}">
-                            <div class="img" id="boxes_img"></div>
-                            <h4>"Boxes"</h4>
-                        </a></li>
-                        <li class="menu-item"><a href="{% url 'userena_profile_detail' user.username %}">
-                            <img id="avatar" src="{{ user.get_profile.get_mugshot_url }}" alt="Your mugshot" />
-                            <h4>"Account"</h4>
-                        </a></li>
-                    {% endif %}
-                </ul>
-            </div>
-            <img id="logo-compact" src="{% static 'chefwhale/images/whale_title.png' %}" />
-            <div id="border-compact"></div>
-        </div>
-        {% endblock %}
-        <div id="push"></div>
-    </div>
-
-    <div id="footer">
-        <div id="text-area">
-            <ul>
-                <li><a href="{% url 'notes:index' %}">Home</a></li>
-                <li><img src="{% static 'looseleaf/images/starfish.png' %}" /></li>
-                <li><a href="#">Contact</a></li>
-                <li><img src="{% static 'looseleaf/images/starfish.png' %}" /></li>
-                <li><a href="{#  url 'notes:about' #}">About</a></li>
-            </ul>
-        </div>
-    </div>
-
-    </body>
-</html>
-{% endcomment %}

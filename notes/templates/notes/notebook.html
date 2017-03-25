@@ -8,6 +8,17 @@ Test
 {% block content %}
     <p>This page will have the notes of a given notebook on it, in the cool block/masonry format.</p>
     <p>It's where the bulk of the functionality will lie</p>
+
+
+    <!-- Add note -->
+    <form method="POST" id="note-form">
+        {% csrf_token %}
+        <div class="fieldWrapper" id="note">
+            {{ form.as_p }}
+        </div>
+        <div id="results"></div> <!-- errors go here -->
+        <input type="submit" value="Post" class="tiny button">
+    </form>
 {% endblock %}
 
 {% block extra_js %}

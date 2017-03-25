@@ -15,17 +15,25 @@ body {
     display: inline-block;
 }
 
-.navbar-nav i.fa {
-    padding-right: 12px;
+.navbar-nav i.fa, .btn i.fa {
+    padding-right: 10px;
 }
 .dropdown-menu {
     border: none;
 }
 
+.user-icon {
+    border-radius: 50%;
+    height: 32px;
+    margin: -6px 0;
+    display: inline-block;
+    font-size: 32px;
+}
+
 /** FOOTER **/
 
 footer {
-    font-family: "Work Sans", sans-serif;
+    font-family: "Open Sans", sans-serif;
     //font-weight: 600;
     color: #999;
 }
