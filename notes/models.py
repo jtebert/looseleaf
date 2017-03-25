@@ -12,11 +12,17 @@ class Color(models.Model):
     name = models.CharField(max_length=127)
     hex = models.CharField(max_length=6)
 
+    def __str__(self):
+        return self.name
+
 class Notebook(models.Model):
     owner = models.ForeignKey(UserProfile)
     collaborators = models.ManyToManyField(UserProfile, related_name='collaborators')
     title = models.CharField(max_length=255)
     color = models.ForeignKey(Color)
+
+    def __str__(self):
+        return self.title
 
 class Note(models.Model):
     id = models.CharField(max_length=255, primary_key=True, default=pkgen(255))
@@ -31,3 +37,6 @@ class Note(models.Model):
     height = models.IntegerField()
     # Other
     color = models.ForeignKey(Color)
+
+    def __str__(self):
+        return self.title
