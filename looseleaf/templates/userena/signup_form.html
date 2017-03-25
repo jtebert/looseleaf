@@ -1,0 +1,16 @@
+{% extends 'userena/base_userena.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    <h2>{% trans "Signup" %}</h2>
+
+    {{ form|crispy }}
+
+    <input type="submit" value="{% trans 'Signup' %}"/>
+</form>
+{% endblock %}

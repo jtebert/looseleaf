@@ -61,3 +61,11 @@ footer div {
     height: 14px;
     display: inline-block;
 }
+
+
+/** NOTEBOOK LIST (INDEX) **/
+
+.notebook-list {
+    list-style: none;
+    padding-left: 0;
+}

@@ -1,0 +1,9 @@
+{% extends 'userena/base_userena.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Disabled account" %}{% endblock %}
+{% block content_title %}<h2>{% trans "Your account has been disabled" %}</h2>{% endblock %}
+{% block content %}
+    <p>{% trans "It seems your account has been disabled or has not yet been verified." %}</p>
+    <p>{% trans "If you feel that injustice has been done to you, feel free to contact us to find out why" %}</p>
+{% endblock %} 

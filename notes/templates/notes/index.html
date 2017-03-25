@@ -9,11 +9,10 @@ Test
     <p>This page has a list of the notebooks on it</p>
     <p>I think it would be cool to make the icon for each of them a leaf in the color of the notebook</p>
 
-    <ul>
-        {% for n in notebooks %}
-            <li><a href="{% url 'notes:notebook' pk=n.pk %}">{{ n.title }}</a></li>
-        {% endfor %}
-    </ul>
+    <h1>Notebooks</h1>
+    {% for n in notebooks %}
+        <a href="{% url 'notes:notebook' pk=n.pk %}"><h2>{{ n.title }}</h2></a>
+    {% endfor %}
     <a class="btn btn-primary" href="{% url 'notes:add_notebook' %}" role="button"><i class="fa fa-plus"></i> Add Notebook</a>
 {% endblock %}
 

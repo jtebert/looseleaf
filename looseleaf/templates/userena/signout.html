@@ -1,0 +1,11 @@
+{% extends 'userena/base_userena.html' %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block title %}{% trans "Signed out" %}{% endblock %}
+{% block content_title %}<h2>{% trans "You have been signed out" %}.</h2>{% endblock %}
+
+{% block content %}
+<img src="{% static 'chefwhale/images/chefwhale_signout.png' %}" style="display:inline-block; margin-right: 1em;"/>
+<p style="display:inline-block; vertical-align: top;">{% trans "You have been signed out. Till we meet again." %}</p>
+{% endblock %}
