@@ -46,4 +46,4 @@ class Note(models.Model):
     color = models.ForeignKey(Color)
 
     def __str__(self):
-        return self.title
+        return self.content

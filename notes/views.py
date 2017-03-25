@@ -28,7 +28,7 @@ def notebook(request, pk):
     # Page view for a specific notebook
     # Bulk of functionality goes here
     notebook = Notebook.objects.get(pk=pk)
-    notes = Note.objects.filter(notebook=notebook)
+    notes = Note.objects.filter(notebook=notebook).order_by('x_pos')
     profile = profile_from_request(request)
     form = NoteForm()
 
@@ -42,6 +42,7 @@ def notebook(request, pk):
                 'notebook': notebook,
                 'profile': profile,
                 'form': form,
+                'notes': notes,
             }
         )
     else:
@@ -77,10 +78,14 @@ def add_note(request):
         response_data = {}
         note = Note(
             notebook=Notebook.objects.get(pk=request.POST.get('notebook')),
-            x_pos=request.POST.get('x'),
-            y_pos=request.POST.get('y'),
-            width=request.POST.get('width'),
-            height=request.POST.get('height'),
+            #x_pos=request.POST.get('x'),
+            x_pos=0,
+            y_pos=0,
+            width=2,
+            height=3,
+            #y_pos=request.POST.get('y'),
+            #width=request.POST.get('width'),
+            #height=request.POST.get('height'),
             color=Color.objects.get(pk=request.POST.get('color')),
             content=request.POST.get('content_raw')
         )

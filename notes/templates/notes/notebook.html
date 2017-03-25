@@ -1,25 +1,45 @@
 {% extends 'looseleaf/base.html' %}
 {% load staticfiles %}
 
-{% block header %}
-Test
+{% block extra_head %}
+    <link rel="stylesheet" href="{%  static 'looseleaf/gridstack/gridstack.css' %}"/>
 {% endblock %}
 
 {% block content %}
-    <p>This page will have the notes of a given notebook on it, in the cool block/masonry format.</p>
-    <p>It's where the bulk of the functionality will lie</p>
+    <h1 class="notebook-id" id="{{ notebook.pk }}">{{ notebook.title }}</h1>
+
+    <!-- Gridstack -->
+    <div class="container-fluid">
+        <h1>Serialization demo</h1>
+        <div>
+            <a class="btn btn-default" id="add-box" href="#">Add Note</a>
+			<a class="btn btn-default" id="save-grid" href="#">Save Grid</a>
+            <a class="btn btn-default" id="load-grid" href="#">Load Grid</a>
+            <a class="btn btn-default" id="clear-grid" href="#">Clear Grid</a>
+        </div>
+
+        <br/>
+        <div class="grid-stack">
+        </div>
+
+		<br>
+        <hr/>
+        <textarea id="saved-data" cols="100" rows="20" readonly="readonly"></textarea>
+    </div>
 
     {# Temporarily display notes as list #}
+    <h1>Existing notes</h1>
     {% for n in notes %}
-
+        <p>{{ n.content }}</p>
     {% endfor %}
 
-
+    <h1>Add note</h1>
     <!-- Add note -->
     <form method="POST" id="note-form">
         {% csrf_token %}
         <div class="fieldWrapper" id="note">
-            {{ form.as_p }}
+            {{ form.content }}
+            {{ form.color }}
         </div>
         <div id="results"></div> <!-- errors go here -->
         <input type="submit" value="Post" class="tiny button">
@@ -27,8 +47,17 @@ Test
 {% endblock %}
 
 {% block extra_js %}
-<!-- MathJax -->
-<script type="text/javascript" async
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
+    <!-- For GridStack -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>
+    <script src="{%  static 'looseleaf/gridstack/gridstack.js' %}"></script>
+    <script src="{%  static 'looseleaf/gridstack/gridstack.jQueryUI.js' %}"></script>
+    <script src="{%  static 'looseleaf/js/gridstack_custom.js' %}"></script>
+
+    <!-- MathJax -->
+    <script type="text/javascript" async
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
 {% endblock %}
