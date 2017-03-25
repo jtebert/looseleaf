@@ -103,19 +103,49 @@ $(function () {
 
 
     this.saveGrid = function () {
+		
+		NewData = [];
+		Coords = [];
+		
+	gridDataVec = ($('.grid-stack > .grid-stack-item:visible')).data('_gridstack_node');
 
+	var items = GridStackUI.Utils.sort(this.serializedData);
+	
+	        _.each(items, function (node) {
+		  
+		   _.each(gridDataVec, function(el)){
+				var gridData = el.data('_gridstack_node');
+				
+				if (gridData.id==node.id){
+					
+					NewData.push({
+						x: gridData.x,
+						y: gridData.y,
+						width: gridData.width,
+						height: gridData.height,
+						id: gridData.id,
+						color: node.color,
+						content_html: node.content_html
+					});
+					
+					Coords.push({
+						x: gridData.x,
+						y: gridData.y,
+						width: gridData.width,
+						height: gridData.height,
+						id: gridData.id
+					})
+					
+					
+				}
+		   
+		   
+		   }, this);
 
-        gridDataVec = ($('.grid-stack > .grid-stack-item:visible'));
-
-            $('.grid-stack > .grid-stack-item:visible')
-            var gridData = el.data('_gridstack_node');
-            return {
-                x: gridData.x,
-                y: gridData.y,
-                width: gridData.width,
-                height: gridData.height,
-                id: gridData.id,
-            };
+        }, this);
+		
+		this.serializedData=NewData;
+		
         $('#saved-data').val(JSON.stringify(this.serializedData, null, '    '));
         return false;
     }.bind(this);
