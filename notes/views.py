@@ -126,7 +126,7 @@ def add_note(request):
         response_data['id'] = note.pk
         response_data['color'] = note.color.hex
         response_data['text_color'] = note.color.text_color
-        response_data['content_html'] = note.content
+        response_data['content_html'] = markdown.markdown(note.content)
 
         return JsonResponse(response_data)
 
@@ -172,6 +172,6 @@ def edit_note(request):
         response_data['id'] = note.pk
         response_data['color'] = note.color.hex
         response_data['text_color'] = note.color.text_color
-        response_data['content_html'] = note.content
+        response_data['content_html'] = markdown.markdown(note.content)
 
         return JsonResponse(response_data)
