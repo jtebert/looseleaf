@@ -107,48 +107,56 @@ $(function () {
 		NewData = [];
 		Coords = [];
 		
-	gridDataVec = ($('.grid-stack > .grid-stack-item:visible')).data('_gridstack_node');
-
-	var items = GridStackUI.Utils.sort(this.serializedData);
-	
-	        _.each(items, function (node) {
-		  
-		   _.each(gridDataVec, function(el) {
-				var gridData = el.data('_gridstack_node');
-				
-				if (gridData.id==node.id){
-					
-					NewData.push({
-						x: gridData.x,
-						y: gridData.y,
-						width: gridData.width,
-						height: gridData.height,
-						id: gridData.id,
-						color: node.color,
-						content_html: node.content_html
-					});
-					
-					Coords.push({
-						x: gridData.x,
-						y: gridData.y,
-						width: gridData.width,
-						height: gridData.height,
-						id: gridData.id
-					})
-					
-					
-				}
-		   
-		   
-		   }, this);
-
-        }, this);
 		
-		this.serializedData=NewData;
+		gridDataVec = _.map($('.grid-stack > .grid-stack-item:visible'), function (el) {
+							el = $(el);
+							var node = el.data('_gridstack_node');
+							return {
+								x: node.x,
+								y: node.y,
+								width: node.width,
+								height: node.height,
+								id: node.id
+							};
+						}, this);
+
+		var items = GridStackUI.Utils.sort(this.serializedData);
 		
-        $('#saved-data').val(JSON.stringify(this.serializedData, null, '    '));
-        return false;
-    }.bind(this);
+				_.each(items, function (node) {
+			  
+			   _.each(gridDataVec, function(gridData)){				
+					if (gridData.id==node.id){
+						
+						NewData.push({
+							x: gridData.x,
+							y: gridData.y,
+							width: gridData.width,
+							height: gridData.height,
+							id: gridData.id,
+							color: node.color,
+							content_html: node.content_html
+						});
+						
+						Coords.push({
+							x: gridData.x,
+							y: gridData.y,
+							width: gridData.width,
+							height: gridData.height,
+							id: gridData.id
+						});
+					}			   
+			   }, this);
+			}, this);
+			this.serializedData=NewData;
+			
+			//TODO: Send out the new serialized data along with new coords.
+			
+			$('#saved-data').val(JSON.stringify(this.serializedData, null, '    '));
+			
+			modify_post(Coords);
+			
+			return false;
+		}.bind(this);
 
 
 
@@ -243,6 +251,32 @@ $(function () {
         });
     };
 
+	
+	
+	    function modify_post(Coords) {
+        $.ajax({
+            url: "/mod_note/", // the endpoint
+            type: "POST", // http method
+            data: Coords, // data sent with the post request
+
+            // handle a successful response
+            success: function (json) {
+                 console.log("success"); // another sanity check
+            },
+
+            // handle a non-successful response
+            error: function (xhr, errmsg, err) {
+                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: " + errmsg +
+                    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    };
+	
+	
+	
+	
+	
     $(function () {
         // This function gets cookie with a given name
         function getCookie(name) {
