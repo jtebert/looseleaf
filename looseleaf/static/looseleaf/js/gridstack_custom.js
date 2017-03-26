@@ -79,10 +79,9 @@ $(function () {
         console.log('Rebuilding All Grids');
         var items = GridStackUI.Utils.sort(this.serializedData);
         _.each(items, function (node) {
-            this.grid.addWidget($('<div><div id="' + node.id + '" class="grid-stack-item-content"' +
+            this.grid.addWidget($('<div data-toggle="modal" data-target="#modal'+node.id+'"><div id="' + node.id + '" class="grid-stack-item-content"' +
                 'style="color: #2c3e50; background-color: #'+node.color+';">' +
 				node.content_html +
-                '<button class="btn btn-secondary btn-bottom" type="button" id="'+node.id+'" onclick="delete_note">Delete</button>'+
                 '<div/><div/>'), node.x, node.y, node.width, node.height, false, null, null, null, null, node.id);
             console.log(node)
             /*
@@ -94,6 +93,7 @@ $(function () {
         }, this);
 
         console.log('maxId = '+maxId.toString());
+        this.createModals(); //CREATE NEW MODALS EACH TIME WE UPDATE THE GRID
 
         changeHand = on;
 
@@ -187,6 +187,48 @@ $(function () {
         changeHand = on;
         return false;
     }.bind(this);
+
+
+
+
+
+
+    this.createModals= function(){
+
+						gridDataVec = _.map($('.grid-stack > .grid-stack-item:visible'), function (el) {
+							el = $(el);
+							var node = el.data('_gridstack_node');
+							return {
+								x: node.x,
+								y: node.y,
+								width: node.width,
+								height: node.height,
+								id: node.id
+							};
+						}, this);
+
+				var items = GridStackUI.Utils.sort(this.serializedData);
+
+				var divText='';
+				_.each(items, function (node) {
+
+
+			 divText=divText+'<div class="modal fade" id="modal'+node.id+'" role="dialog">'+
+    '<div class="modal-dialog" ><div class="modal-content" style="background-color: #'+node.color+'">'+
+	'<div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button>'+
+        '</div>'+
+        '<div class="modal-body">'+
+          node.content_html+ //ADD CONTENT HTML HERE
+        '</div>'+
+		'<div class="modal-footer"><button type="button" class="btn btn-default" onclick="editNote">EDIT</button></div></div></div></div>';
+				}, this);
+
+				document.getElementById('addModals').innerHTML=divText
+
+				}.bind(this);
+
+
+
 
 
 
