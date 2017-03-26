@@ -344,13 +344,12 @@ $(function () {
 
 	
 	
-	function edit_get(params) {
+	function edit_get(id) {
         $.ajax({
             url: "/edit_note/", // the endpoint
             type: "POST", // http method
             data: {
-				id: params,
-                notebook: $('.notebook-id').attr('id')
+				id: id,
                 // TODO: Add position/size
             }, // data sent with the post request
 
