@@ -30,6 +30,7 @@ def notebook(request, pk):
     # Page view for a specific notebook
     # Bulk of functionality goes here
     notebook = Notebook.objects.get(pk=pk)
+    #print 'colabs:', notebook.collaborators.all()
     notes = Note.objects.filter(notebook=notebook).order_by('x_pos')
     profile = profile_from_request(request)
     form = NoteForm()
@@ -54,7 +55,6 @@ def notebook(request, pk):
 @login_required
 def add_notebook(request):
     profile = profile_from_request(request)
-
     if request.method == 'POST':
         notebook_form = NotebookForm(request.POST)
         #collab_emails = request.POST.get('collaborators').replace(' ', '').split(',')
@@ -63,9 +63,12 @@ def add_notebook(request):
         #print collabs
         #notebook_form.collaborators = collabs
         if notebook_form.is_valid():
+            print 'collaborators', notebook_form.cleaned_data['collaborators']
             notebook = notebook_form.save(commit=False)
             notebook.owner = profile_from_request(request)
-            notebook = notebook.save()
+            notebook.save()
+            notebook_form.save_m2m()
+            print 'saved collaborators:', notebook.collaborators
             messages.success(request, "Notebook added.")
             return HttpResponseRedirect(reverse("notes:index"))
     else:  # GET

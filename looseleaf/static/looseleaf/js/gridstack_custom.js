@@ -80,9 +80,9 @@ $(function () {
         var items = GridStackUI.Utils.sort(this.serializedData);
         _.each(items, function (node) {
             this.grid.addWidget($('<div><div id="' + node.id + '" class="grid-stack-item-content"' +
-                'style="color: #2c3e50; text-align: center; background-color: #'+node.color+';">' +
-				'<button type="button" id="'+node.id+'" onclick="delete_note">Delete Note</button>'+
-				'<br>'+node.content_html +
+                'style="color: #2c3e50; background-color: #'+node.color+';">' +
+				node.content_html +
+                '<button class="btn btn-secondary btn-bottom" type="button" id="'+node.id+'" onclick="delete_note">Delete</button>'+
                 '<div/><div/>'), node.x, node.y, node.width, node.height, false, null, null, null, null, node.id);
             console.log(node)
             /*

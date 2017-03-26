@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import django_markdown.models
 
 
 class Migration(migrations.Migration):
@@ -25,7 +24,7 @@ class Migration(migrations.Migration):
             name='Note',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('content', django_markdown.models.MarkdownField(blank=True)),
+                ('content', models.TextField(blank=True)),
                 ('x_pos', models.IntegerField()),
                 ('y_pos', models.IntegerField()),
                 ('width', models.IntegerField()),
@@ -38,7 +37,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('title', models.CharField(max_length=255)),
-                ('collaborators', models.ManyToManyField(related_name='collaborators', null=True, to='accounts.UserProfile', blank=True)),
+                ('collaborators', models.ManyToManyField(related_name='collaborators', to='accounts.UserProfile', blank=True)),
                 ('color', models.ForeignKey(to='notes.Color')),
                 ('owner', models.ForeignKey(to='accounts.UserProfile')),
             ],

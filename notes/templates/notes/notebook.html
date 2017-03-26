@@ -8,9 +8,22 @@
 {% block content %}
     <h1 class="notebook-id" id="{{ notebook.pk }}">{{ notebook.title }}</h1>
 
+    <div class="add-note">
+        <h2>Add note</h2>
+        <!-- Add note -->
+        <form method="POST" id="note-form">
+            {% csrf_token %}
+            <div class="fieldWrapper" id="note">
+                {{ form.content }}
+                {{ form.color }}
+            </div>
+            <div id="results"></div> <!-- errors go here -->
+            <input type="submit" value="Post" class="btn btn-primary">
+        </form>
+    </div>
+
     <!-- Collaborators -->
     <div class="collaborator-box">
-    test
         {% for c in notebook.collaborators.items %}
             {{ c.mugshot }} test
         {% endfor %}
@@ -18,6 +31,7 @@
 
     <!-- Gridstack -->
     <div class="container-fluid">
+        {% comment %}
         <h1>Serialization demo</h1>
         <div>
             <a class="btn btn-default" id="add-box" href="#">Add Note</a>
@@ -25,33 +39,25 @@
             <a class="btn btn-default" id="load-grid" href="#">Load Grid</a>
             <a class="btn btn-default" id="clear-grid" href="#">Clear Grid</a>
         </div>
+        {% endcomment %}
 
         <br/>
         <div class="grid-stack">
         </div>
 
+        {% comment %}
 		<br>
         <hr/>
         <textarea id="saved-data" cols="100" rows="20" readonly="readonly"></textarea>
+        {% endcomment %}
     </div>
 
     {# Temporarily display notes as list #}
-    <h1>Existing notes</h1>
+    {% comment %}<h1>Existing notes</h1>
     {% for n in notes %}
         <p>{{ n.content }}</p>
-    {% endfor %}
+    {% endfor %}{% endcomment %}
 
-    <h1>Add note</h1>
-    <!-- Add note -->
-    <form method="POST" id="note-form">
-        {% csrf_token %}
-        <div class="fieldWrapper" id="note">
-            {{ form.content }}
-            {{ form.color }}
-        </div>
-        <div id="results"></div> <!-- errors go here -->
-        <input type="submit" value="Post" class="tiny button">
-    </form>
 {% endblock %}
 
 {% block extra_js %}
