@@ -138,7 +138,7 @@ def edit_note(request):
     # Edit an existing note in the notebook
     if request.method == 'POST':
         response_data = {}
-        note = Note.objects.get(id=request.POST.get('id'))
+        note = Note.objects.get(pk=request.POST.get('id'))
         note.x_pos = request.POST.get('x')
         note.y_pos = request.POST.get('y')
         note.width = request.POST.get('width')
