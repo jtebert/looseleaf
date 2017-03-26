@@ -1,11 +1,12 @@
 import json
 import markdown
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.urlresolvers import reverse
+from django.template.loader import render_to_string
 
 from notes.utils import profile_from_request
 from notes.models import Notebook, Color, Note
@@ -154,8 +155,8 @@ def delete_note(request):
 
 
 def edit_note(request):
-    # Edit an existing note in the notebook
     if request.method == 'POST':
+        # Save edits to an existing note in the notebook
         response_data = {}
         note = Note.objects.get(pk=request.POST.get('id'))
         note.x_pos = request.POST.get('x')
@@ -173,5 +174,10 @@ def edit_note(request):
         response_data['color'] = note.color.hex
         response_data['text_color'] = note.color.text_color
         response_data['content_html'] = markdown.markdown(note.content)
-
         return JsonResponse(response_data)
+    else:
+        # Send back a form to edit the existing note
+        note = Note.objects.get(pk=request.GET.get('id'))
+        note_form = NoteForm(note)
+        response = render_to_string('notes/note_form_modal.html', {'form': note_form})
+        return HttpResponse(response)

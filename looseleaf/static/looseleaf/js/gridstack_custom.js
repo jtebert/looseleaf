@@ -41,7 +41,7 @@ $(function () {
         $('.grid-stack').gridstack();
 
         var grid = $('.grid-stack').data('gridstack');
-        this.grid.addWidget($('<div><div id="' + params.id + '" class="grid-stack-item-content" style="background-color: #'+params.color+';" /><div/>'), params.x, params.y, params.width, params.height, true, null, null, null, null, params.id);
+        this.grid.addWidget($('<div><div id="' + params.id + '" class="grid-stack-item-content text-color-' + params.text_color + '" style="background-color: #'+params.color+';" /><div/>'), params.x, params.y, params.width, params.height, true, null, null, null, null, params.id);
 
 
         console.log('Saving Grid');
@@ -79,8 +79,8 @@ $(function () {
         console.log('Rebuilding All Grids');
         var items = GridStackUI.Utils.sort(this.serializedData);
         _.each(items, function (node) {
-            this.grid.addWidget($('<div data-toggle="modal" data-target="#modal'+node.id+'"><div id="' + node.id + '" class="grid-stack-item-content"' +
-                'style="color: #2c3e50; background-color: #'+node.color+';">' +
+            this.grid.addWidget($('<div data-toggle="modal" data-target="#modal'+node.id+'"><div id="' + node.id + '" class="grid-stack-item-content text-color-' + node.text_color + '"' +
+                'style="background-color: #'+node.color+';">' +
 				node.content_html +
                 '<div/><div/>'), node.x, node.y, node.width, node.height, false, null, null, null, null, node.id);
             console.log(node)
@@ -136,6 +136,7 @@ $(function () {
 							height: gridData.height,
 							id: gridData.id,
 							color: node.color,
+                            text_color: node.text_color,
 							content_html: node.content_html
 						});
 						
@@ -214,7 +215,7 @@ $(function () {
 
 
 			 divText=divText+'<div class="modal fade" id="modal'+node.id+'" role="dialog">'+
-    '<div class="modal-dialog" ><div class="modal-content" style="background-color: #'+node.color+'">'+
+    '<div class="modal-dialog" ><div class="modal-content text-color-' + node.text_color + '" style="background-color: #'+node.color+'">'+
 	'<div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button>'+
         '</div>'+
         '<div class="modal-body">'+

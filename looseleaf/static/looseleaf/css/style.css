@@ -106,9 +106,13 @@ form .fieldWrapper {
 .grid-stack-item-content h1 {
     margin-top: 8px;
 }
-.btn-bottom {
-    //position: absolute;
-    //bottom: 8px;
+.grid-stack-item-content.text-color-dark {
+    /* Dark text */
+    color: #000;
+}
+.grid-stack-item-content.text-color-light {
+    /* Light text */
+    color: #fff;
 }
 
 
