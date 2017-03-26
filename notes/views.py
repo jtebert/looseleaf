@@ -71,6 +71,24 @@ def add_notebook(request):
         }
     )
 
+def get_notes(request):
+    if request.method == 'GET':
+        notebook_id = request.GET.get('notebook')
+        notes_json = []
+        notes = Note.objects.filter(notebook=notebook_id)
+        for note in notes:
+            notes_json.append({
+                'id': note.id,
+                'x': note.x_pos,
+                'y': note.y_pos,
+                'width': note.width,
+                'height': note.height,
+                'content_html': note.content,
+                'color': note.color.hex,
+                'text_color': note.color.text_color
+            })
+        return JsonResponse(json.dumps(notes_json))
+
 
 def add_note(request):
     # Add a new note to the notebook
