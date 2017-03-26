@@ -113,7 +113,7 @@ $(function () {
 	
 	        _.each(items, function (node) {
 		  
-		   _.each(gridDataVec, function(el)){
+		   _.each(gridDataVec, function(el) {
 				var gridData = el.data('_gridstack_node');
 				
 				if (gridData.id==node.id){

@@ -51,7 +51,6 @@
                     <li><a href="{% url 'userena_profile_detail' user.username %}">
                         {% if profile.get_mugshot_url %}
                             <img src="{{ profile.get_mugshot_url }}" class="user-icon"/>
-
                         {% else %}
 
                             <i class="fa fa-user-circle user-icon"></i>

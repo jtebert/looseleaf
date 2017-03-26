@@ -69,3 +69,24 @@ footer div {
     list-style: none;
     padding-left: 0;
 }
+
+
+/** USERENA **/
+
+#box-nav {
+    display: inline-block;
+}
+
+.mugshot {
+    float: left;
+    width: 200px;
+    margin-right: 32px;
+}
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+    .mugshot {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 16px;
+    }
+}
