@@ -101,11 +101,27 @@ def add_note(request):
 
         return JsonResponse(response_data)
 
+def move_notes(request):
+    # Update positions of notes when dragged/resized
+    if request.method == 'POST':
+        notes_tmp = request.POST.get('coords')
+        print 'notes_tmp', notes_tmp
+        notes = json.loads(notes_tmp)
+        print 'notes', notes
+        for n in notes:
+            note = Note.objects.get(id=n['id'])
+            note.x_pos = n['x']
+            note.y_pos = n['y']
+            note.width = n['width']
+            note.height = n['height']
+            note.save()
+        return JsonResponse({"Hi": "mom"})
+
 def edit_note(request):
     # Edit an existing note in the notebook
     if request.method == 'POST':
         response_data = {}
-        note = Note.objects.get(pk=request.POST.get('id'))
+        note = Note.objects.get(id=request.POST.get('id'))
         note.x_pos = request.POST.get('x')
         note.y_pos = request.POST.get('y')
         note.width = request.POST.get('width')

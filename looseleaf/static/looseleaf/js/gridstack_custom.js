@@ -19,8 +19,7 @@ $(function () {
      to initialize the sizes and positions of the user's notes
      ================================================================*/
     this.serializedData = [
-        {x: 0, y: 0, width: 2, height: 2, id: 1, color: 'F00', content_html: 'Cats'},
-
+        //{x: 0, y: 0, width: 2, height: 2, id: 1, color: 'F00', content_html: 'Cats'},
     ];
 
 
@@ -124,7 +123,7 @@ $(function () {
 		
 				_.each(items, function (node) {
 			  
-			   _.each(gridDataVec, function(gridData)){				
+			   _.each(gridDataVec, function(gridData){
 					if (gridData.id==node.id){
 						
 						NewData.push({
@@ -152,7 +151,7 @@ $(function () {
 			//TODO: Send out the new serialized data along with new coords.
 			
 			$('#saved-data').val(JSON.stringify(this.serializedData, null, '    '));
-			
+			console.log(Coords);
 			modify_post(Coords);
 			
 			return false;
@@ -255,9 +254,9 @@ $(function () {
 	
 	    function modify_post(Coords) {
         $.ajax({
-            url: "/mod_note/", // the endpoint
+            url: "/move_notes/", // the endpoint
             type: "POST", // http method
-            data: Coords, // data sent with the post request
+            data: {'coords': JSON.stringify(Coords)}, // data sent with the post request
 
             // handle a successful response
             success: function (json) {
