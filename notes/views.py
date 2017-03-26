@@ -57,11 +57,11 @@ def add_notebook(request):
 
     if request.method == 'POST':
         notebook_form = NotebookForm(request.POST)
-        collab_emails = request.POST.get('collaborators').replace(' ', '').split(',')
-        print collab_emails
-        collabs = UserProfile.objects.filter(user__email=collab_emails)
-        print collabs
-        notebook_form.collaborators = collabs
+        #collab_emails = request.POST.get('collaborators').replace(' ', '').split(',')
+        #print collab_emails
+        #collabs = UserProfile.objects.filter(user__email=collab_emails)
+        #print collabs
+        #notebook_form.collaborators = collabs
         if notebook_form.is_valid():
             notebook = notebook_form.save(commit=False)
             notebook.owner = profile_from_request(request)
@@ -140,6 +140,15 @@ def move_notes(request):
             note.height = n['height']
             note.save()
         return JsonResponse({"Hi": "mom"})
+
+
+def delete_note(request):
+    # Delete the note with the given ID
+    if request.method == 'POST':
+        note = Note.objects.get(pk=request.POST.get('id'))
+        note.delete()
+        return JsonResponse('Delete successful', safe=False)
+
 
 def edit_note(request):
     # Edit an existing note in the notebook

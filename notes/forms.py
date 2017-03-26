@@ -19,7 +19,7 @@ class NotebookForm(forms.ModelForm):
         fields = ('collaborators', 'title', 'color')
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': "Title"}),
-            'collaborators': forms.TextInput(attrs={'placeholder': "Separate emails with commas"})
+            #'collaborators': forms.TextInput(attrs={'placeholder': "Separate emails with commas"})
         }
 
 

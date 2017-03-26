@@ -80,8 +80,9 @@ $(function () {
         var items = GridStackUI.Utils.sort(this.serializedData);
         _.each(items, function (node) {
             this.grid.addWidget($('<div><div id="' + node.id + '" class="grid-stack-item-content"' +
-                'style="background-color: #'+node.color+';">' +
-                node.content_html +
+                'style="color: #2c3e50; text-align: center; background-color: #'+node.color+';">' +
+				'<button type="button" id="'+node.id+'" onclick="delete_note">Delete Note</button>'+
+				'<br>'+node.content_html +
                 '<div/><div/>'), node.x, node.y, node.width, node.height, false, null, null, null, null, node.id);
             console.log(node)
             /*
@@ -197,6 +198,7 @@ $(function () {
 
     $('#add-box').click(this.addBox);
 
+
     _this=this;
 
 
@@ -300,6 +302,40 @@ $(function () {
             }
         });
     };
+
+     function delete_note(id) {
+        $.ajax({
+            url: "/delete_note/", // the endpoint
+            type: "POST", // http method
+            data: {
+				id: id,
+                notebook: $('.notebook-id').attr('id')
+            }, // data sent with the post request
+
+            // handle a successful response
+            success: function (json) {
+                $('#id_content').val(''); // remove the value from the input
+                console.log(json); // log the returned json to the console
+
+				var items = GridStackUI.Utils.sort(_this.serializedData);
+				_.each(items, function (node,i) {
+					if(id==node.id){
+						_this.serializedData = items.splice(i, 1);
+					}
+				});
+
+                _this.loadGrid();
+                console.log("success"); // another sanity check
+            }.bind(this),
+
+            // handle a non-successful response
+            error: function (xhr, errmsg, err) {
+                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: " + errmsg +
+                    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    };
 	
 	
 	
@@ -359,7 +395,6 @@ $(function () {
             }
         });
     });
-
-
+    //$('#delete-note').click(delete_note(this.id));
 
 });

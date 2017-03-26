@@ -8,6 +8,14 @@
 {% block content %}
     <h1 class="notebook-id" id="{{ notebook.pk }}">{{ notebook.title }}</h1>
 
+    <!-- Collaborators -->
+    <div class="collaborator-box">
+    test
+        {% for c in notebook.collaborators.items %}
+            {{ c.mugshot }} test
+        {% endfor %}
+    </div>
+
     <!-- Gridstack -->
     <div class="container-fluid">
         <h1>Serialization demo</h1>
