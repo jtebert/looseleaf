@@ -34,13 +34,13 @@
 <body>
 
 
-<div class="container">
+<div class="container" id='addModals'>
   <h2>Modal Example</h2>
   <!-- Trigger the modal with a button -->
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+  <button type="button" data-toggle="modal" data-target="#modal0">Open Modal</button>
 
   <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
+  <div class="modal fade" id="modal0" role="dialog">
     <div class="modal-dialog">
     
       <!-- Modal content-->
@@ -53,12 +53,18 @@
           <p>INSERT CONTENT HERE.</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-default" onclick="editNote">EDIT</button>
         </div>
       </div>
       
     </div>
   </div>
+  
+  
+  
+
+  
+  
   
 </div>
 
@@ -92,26 +98,49 @@
             $('.grid-stack').gridstack(options);
             new function () {
                 this.serializedData = [
-                    {x: 0, y: 0, width: 2, height: 2},
-                    {x: 3, y: 1, width: 1, height: 2},
-                    {x: 4, y: 1, width: 1, height: 1},
-                    {x: 2, y: 3, width: 3, height: 1},
-                    {x: 1, y: 4, width: 1, height: 1},
-                    {x: 1, y: 3, width: 1, height: 1},
-                    {x: 2, y: 4, width: 1, height: 1},
-                    {x: 2, y: 5, width: 1, height: 1}
+                    {x: 0, y: 0, width: 2, height: 2, id: 1, color: 'd1d1d1'},
+                    {x: 3, y: 1, width: 2, height: 2, id: 2, color: 'ffc26d'},
+                    {x: 4, y: 1, width: 3, height: 1, id: 3, color: 'a0eaff'},
+                    {x: 2, y: 3, width: 3, height: 1, id: 4, color:'e6ceff'},
                 ];
                 this.grid = $('.grid-stack').data('gridstack');
-                this.loadGrid = function () {
+              
+
+
+
+
+
+
+			  this.loadGrid = function () {
                     this.grid.removeAll();
                     var items = GridStackUI.Utils.sort(this.serializedData);
                     _.each(items, function (node) {
-                        this.grid.addWidget($('<div><div class="grid-stack-item-content" /><div/>'),
-                            node.x, node.y, node.width, node.height);
+						 this.grid.addWidget($('<div data-toggle="modal" data-target="#modal'+node.id+'"><div id="' + node.id + '" class="grid-stack-item-content"' +
+							'style="color: #2c3e50; text-align: center; background-color: #'+node.color+';">' +
+							'<br>'+
+							'<div/><div/>'), node.x, node.y, node.width, node.height)					
+							
+							
+							
                     }, this);
+					
+					
+					this.createModals(); //CREATE NEW MODALS EACH TIME WE UPDATE THE GRID
+					
                     return false;
                 }.bind(this);
-                this.saveGrid = function () {
+                
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				this.saveGrid = function () {
                     this.serializedData = _.map($('.grid-stack > .grid-stack-item:visible'), function (el) {
                         el = $(el);
                         var node = el.data('_gridstack_node');
@@ -125,15 +154,70 @@
                     $('#saved-data').val(JSON.stringify(this.serializedData, null, '    '));
                     return false;
                 }.bind(this);
+				
+				
                 this.clearGrid = function () {
                     this.grid.removeAll();
                     return false;
                 }.bind(this);
+							
+				
+				
+				this.createModals= function(){
+				
+						gridDataVec = _.map($('.grid-stack > .grid-stack-item:visible'), function (el) {
+							el = $(el);
+							var node = el.data('_gridstack_node');
+							return {
+								x: node.x,
+								y: node.y,
+								width: node.width,
+								height: node.height,
+								id: node.id
+							};
+						}, this);
+						
+				var items = GridStackUI.Utils.sort(this.serializedData);
+		
+				var divText='';
+				_.each(items, function (node) {
+			
+			
+			 divText=divText+'<div class="modal fade" id="modal'+node.id+'" role="dialog">'+
+    '<div class="modal-dialog" ><div class="modal-content" style="background-color: #'+node.color+'">'+
+	'<div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button>'+
+        '</div>'+
+        '<div class="modal-body">'+
+          '<p>This modal is for div '+node.id+'</p>'+ //ADD CONTENT HTML HERE
+        '</div>'+
+		'<div class="modal-footer"><button type="button" class="btn btn-default" onclick="editNote">EDIT</button></div></div></div></div>';
+				}, this);
+				
+				document.getElementById('addModals').innerHTML=divText
+				
+				}.bind(this);
+				
+				
+				
+				
                 $('#save-grid').click(this.saveGrid);
                 $('#load-grid').click(this.loadGrid);
                 $('#clear-grid').click(this.clearGrid);
+				
+				this.createModals();
                 this.loadGrid();
             };
+			
+							
+				
+				editNote = function (id) {
+
+					console.log('EDIT THE NOTE');
+					
+                    return false;
+                }.bind(this);
+			
+			$('#edit-note').click(editNote('d'));
         });
     </script>
 </body>
