@@ -172,6 +172,7 @@ $(function () {
                 height: params.height,
                 id: params.id,
                 color: params.color,
+                text_color: params.text_color,
                 content_html: params.content_html
             });
         $('#saved-data').val(JSON.stringify(this.serializedData, null, '    '));
@@ -283,6 +284,7 @@ $(function () {
             // handle a successful response
             success: function (json) {
                 $('#id_content').val(''); // remove the value from the input
+                console.log("ADD BOX");
                 console.log(json); // log the returned json to the console
                 _this.addBox(json);
                 console.log("success"); // another sanity check
