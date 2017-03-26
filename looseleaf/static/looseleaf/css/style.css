@@ -71,6 +71,13 @@ footer div {
 }
 
 
+/** GRIDSTACK **/
+
+.grid-stack .grid-stack-item-content {
+    padding: 14px;
+}
+
+
 /** USERENA **/
 
 #box-nav {
