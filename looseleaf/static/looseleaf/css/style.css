@@ -98,6 +98,12 @@ form .fieldWrapper {
 
 /** GRIDSTACK **/
 
+.modal #id_content {
+    background-color:rgba(0, 0, 0, 0);
+    width: 100%;
+    resize: none;
+}
+
 .grid-stack .grid-stack-item-content {
     padding: 14px;
     font-weight: 400;

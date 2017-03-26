@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
+from django.template import RequestContext
 
 from notes.utils import profile_from_request
 from notes.models import Notebook, Color, Note
@@ -157,6 +158,7 @@ def delete_note(request):
 def edit_note(request):
     if request.method == 'POST':
         # Save edits to an existing note in the notebook
+        print "POST REQUEST"
         response_data = {}
         note = Note.objects.get(pk=request.POST.get('id'))
         note.x_pos = request.POST.get('x')
@@ -177,7 +179,10 @@ def edit_note(request):
         return JsonResponse(response_data)
     else:
         # Send back a form to edit the existing note
-        note = Note.objects.get(pk=request.GET.get('id'))
-        note_form = NoteForm(note)
-        response = render_to_string('notes/note_form_modal.html', {'form': note_form})
+        note_id = request.GET.get('id')
+        note = Note.objects.get(pk=note_id)
+        note_form = NoteForm(instance=note)
+        response = render_to_string('notes/note_form_modal.html',
+                                    {'form': note_form},
+                                    context_instance=RequestContext(request))
         return HttpResponse(response)

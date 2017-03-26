@@ -216,14 +216,15 @@ $(function () {
 
 
 			 divText=divText+'<div class="modal fade" id="modal'+node.id+'" role="dialog">'+
-    '<div class="modal-dialog" ><div class="modal-content text-color-' + node.text_color + '" style="background-color: #'+node.color+'">'+
-	'<div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button>'+
-        '</div>'+
-        '<div class="modal-body">'+
-          node.content_html+ //ADD CONTENT HTML HERE
-        '</div>'+
-		'<div class="modal-footer"><button type="button" class="btn btn-default" onclick="editNote">EDIT</button></div></div></div></div>';
-				}, this);
+                '<div class="modal-dialog" ><div class="modal-content text-color-' + node.text_color + '" style="background-color: #'+node.color+'">'+
+                '<div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button>'+
+                    '</div>'+
+                    '<div class="modal-body" id="modal'+node.id+'body">'+
+                      node.content_html+ //ADD CONTENT HTML HERE
+                    '</div>'+
+                    '<div class="modal-footer">'+
+                    '<button id = "'+node.id+'" type="button" class="btn btn-default" onclick="editNote('+node.id+')">EDIT</button></div></div></div></div>';
+                            }, this)
 
 				document.getElementById('addModals').innerHTML=divText
 

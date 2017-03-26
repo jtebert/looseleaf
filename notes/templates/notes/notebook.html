@@ -78,4 +78,47 @@
     <script type="text/javascript" async
       src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
     </script>
+
+
+    <script>
+        editNote = function (id) {
+
+            console.log('EDIT THE NOTE ' + id);
+            edit_get(id)
+
+            return false;
+        };
+
+        function edit_get(id) {
+            $.ajax({
+                url: "/edit_note/", // the endpoint
+                type: "GET", // http method
+                data: {
+                    id: id,
+                    // TODO: Add position/size
+                }, // data sent with the post request
+
+                // handle a successful response
+                success: function (html) {
+                    $('#id_content').val(''); // remove the value from the input
+                    console.log(html);
+                    document.getElementById('modal'+id+'body').innerHTML=html;
+                    //CREATE POPUP MODAL
+
+
+                    console.log("success"); // another sanity check
+                }.bind(this),
+
+                // handle a non-successful response
+                error: function (xhr, errmsg, err) {
+                    $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: " + errmsg +
+                        " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+            });
+        }
+        ;
+
+    </script>
+
 {% endblock %}
