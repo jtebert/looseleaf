@@ -33,7 +33,6 @@ class Notebook(models.Model):
         return self.title
 
 class Note(models.Model):
-    id = models.CharField(max_length=32, primary_key=True, default=pkgen(32))
     notebook = models.ForeignKey(Notebook)
     # Note content
     content = MarkdownField(blank=True)

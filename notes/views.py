@@ -109,7 +109,7 @@ def move_notes(request):
         notes = json.loads(notes_tmp)
         print 'notes', notes
         for n in notes:
-            note = Note.objects.get(id=n['id'])
+            note = Note.objects.get(pk=n['id'])
             note.x_pos = n['x']
             note.y_pos = n['y']
             note.width = n['width']
