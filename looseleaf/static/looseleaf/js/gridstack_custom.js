@@ -1,6 +1,8 @@
 //The template for adding delete buttons
 
 $(function () {
+    get_note();
+
     var options = {};
 
 
@@ -39,7 +41,7 @@ $(function () {
         $('.grid-stack').gridstack();
 
         var grid = $('.grid-stack').data('gridstack');
-        this.grid.addWidget($('<div><div id="' + params.id + '" class="grid-stack-item-content" style=" color: #000000; text-align: center; background-color: #'+params.color+';" /><div/>'), params.x, params.y, params.width, params.height, true, null, null, null, null, params.id);
+        this.grid.addWidget($('<div><div id="' + params.id + '" class="grid-stack-item-content" style="background-color: #'+params.color+';" /><div/>'), params.x, params.y, params.width, params.height, true, null, null, null, null, params.id);
 
 
         console.log('Saving Grid');
@@ -78,7 +80,7 @@ $(function () {
         var items = GridStackUI.Utils.sort(this.serializedData);
         _.each(items, function (node) {
             this.grid.addWidget($('<div><div id="' + node.id + '" class="grid-stack-item-content"' +
-                'style="color: #2c3e50; text-align: center; background-color: #'+node.color+';">' +
+                'style="background-color: #'+node.color+';">' +
                 node.content_html +
                 '<div/><div/>'), node.x, node.y, node.width, node.height, false, null, null, null, null, node.id);
             console.log(node)
@@ -239,6 +241,32 @@ $(function () {
                 console.log(json); // log the returned json to the console
                 _this.addBox(json);
                 console.log("success"); // another sanity check
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+            }.bind(this),
+
+            // handle a non-successful response
+            error: function (xhr, errmsg, err) {
+                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: " + errmsg +
+                    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    };
+
+    function get_note() {
+        $.ajax({
+            url: "/get_notes/", // the endpoint
+            type: "GET", // http method
+            data: {'notebook': $('.notebook-id').attr('id')}, // data sent with the post request
+
+            // handle a successful response
+            success: function (json) {
+                $('#id_content').val(''); // remove the value from the input
+                console.log(json); // log the returned json to the console
+				_this.serializedData = JSON.parse(json);
+                _this.loadGrid();
+                console.log("success"); // another sanity check
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
             }.bind(this),
 
             // handle a non-successful response
@@ -261,6 +289,7 @@ $(function () {
             // handle a successful response
             success: function (json) {
                  console.log("success"); // another sanity check
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
             },
 
             // handle a non-successful response

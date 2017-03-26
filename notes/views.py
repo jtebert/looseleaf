@@ -1,4 +1,5 @@
 import json
+import markdown
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, JsonResponse
 from django.core.exceptions import PermissionDenied
@@ -83,11 +84,11 @@ def get_notes(request):
                 'y': note.y_pos,
                 'width': note.width,
                 'height': note.height,
-                'content_html': note.content,
+                'content_html': markdown.markdown(note.content),
                 'color': note.color.hex,
                 'text_color': note.color.text_color
             })
-        return JsonResponse(json.dumps(notes_json))
+        return JsonResponse(json.dumps(notes_json), safe=False)
 
 
 def add_note(request):
@@ -123,9 +124,7 @@ def move_notes(request):
     # Update positions of notes when dragged/resized
     if request.method == 'POST':
         notes_tmp = request.POST.get('coords')
-        print 'notes_tmp', notes_tmp
         notes = json.loads(notes_tmp)
-        print 'notes', notes
         for n in notes:
             note = Note.objects.get(pk=n['id'])
             note.x_pos = n['x']
