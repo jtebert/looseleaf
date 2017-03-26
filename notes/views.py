@@ -10,6 +10,7 @@ from django.core.urlresolvers import reverse
 from notes.utils import profile_from_request
 from notes.models import Notebook, Color, Note
 from notes.forms import NotebookForm, NoteForm
+from accounts.models import UserProfile
 
 # Create your views here.
 def index(request):
@@ -50,11 +51,17 @@ def notebook(request, pk):
         raise PermissionDenied("That's not your notebook! The owner of this notebook needs to give you permission in order to join it.")
 
 
+@login_required
 def add_notebook(request):
     profile = profile_from_request(request)
 
     if request.method == 'POST':
         notebook_form = NotebookForm(request.POST)
+        collab_emails = request.POST.get('collaborators').replace(' ', '').split(',')
+        print collab_emails
+        collabs = UserProfile.objects.filter(user__email=collab_emails)
+        print collabs
+        notebook_form.collaborators = collabs
         if notebook_form.is_valid():
             notebook = notebook_form.save(commit=False)
             notebook.owner = profile_from_request(request)

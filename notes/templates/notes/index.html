@@ -6,14 +6,18 @@ Test
 {% endblock %}
 
 {% block content %}
-    <p>This page has a list of the notebooks on it</p>
-    <p>I think it would be cool to make the icon for each of them a leaf in the color of the notebook</p>
-
-    <h1>Notebooks</h1>
-    {% for n in notebooks %}
-        <a href="{% url 'notes:notebook' pk=n.pk %}"><h2>{{ n.title }}</h2></a>
-    {% endfor %}
-    <a class="btn btn-primary" href="{% url 'notes:add_notebook' %}" role="button"><i class="fa fa-plus"></i> Add Notebook</a>
+    {% if user.is_authenticated %}
+        <h1>Notebooks</h1>
+        {% for n in notebooks %}
+            <a href="{% url 'notes:notebook' pk=n.pk %}"><h2>{{ n.title }}</h2></a>
+        {% endfor %}
+        <a class="btn btn-primary" href="{% url 'notes:add_notebook' %}" role="button"><i class="fa fa-plus"></i> Add Notebook</a>
+    {% else %}
+        <h1>Welcome to Looseleaf.</h1>
+        <p>You're not logged in. You can either create an account or sign in to start using Looseleaf.</p>
+        <a class="btn btn-primary" href="{% url 'userena_signup' %}" role="button">Sign Up</a>
+        <a class="btn btn-primary" href="{% url 'userena_signin' %}" role="button">Sign In</a>
+    {% endif %}
 {% endblock %}
 
 {% block extra_js %}
