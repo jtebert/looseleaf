@@ -162,6 +162,7 @@ USERENA_SIGNIN_REDIRECT_URL = '/accounts/%(username)s/'
 LOGIN_URL = '/accounts/signin/'
 LOGOUT_URL = '/accounts/signout/'
 USERENA_MUGSHOT_SIZE = 400
+USERENA_ACTIVATION_REQUIRED = False
 
 
 SITE_ID = 1
