@@ -161,13 +161,10 @@ def edit_note(request):
         print "POST REQUEST"
         response_data = {}
         note = Note.objects.get(pk=request.POST.get('id'))
-        note.x_pos = request.POST.get('x')
-        note.y_pos = request.POST.get('y')
-        note.width = request.POST.get('width')
-        note.height = request.POST.get('height')
         note.color = Color.objects.get(pk=request.POST.get('color'))
         note.content = request.POST.get('content_raw')
         note.save()
+
         response_data['x'] = note.x_pos
         response_data['y'] = note.y_pos
         response_data['width'] = note.width
@@ -183,6 +180,7 @@ def edit_note(request):
         note = Note.objects.get(pk=note_id)
         note_form = NoteForm(instance=note)
         response = render_to_string('notes/note_form_modal.html',
-                                    {'form': note_form},
+                                    {'form': note_form,
+                                     'note_id': note_id},
                                     context_instance=RequestContext(request))
         return HttpResponse(response)
