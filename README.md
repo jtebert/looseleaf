@@ -28,4 +28,4 @@ We started this at a hackathon and haven't fixed it from that yet. It's a cool c
 
 ## License
 
-This project is licensed under the [MIT License](license.txt). If you would like to use or help develop it, please consider joining us in working on this project.
+This project is licensed under the [MIT License](license.md). If you would like to use or help develop it, please consider joining us in working on this project.
