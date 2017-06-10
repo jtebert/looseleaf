@@ -57,9 +57,34 @@ footer div {
 /** FORMS **/
 
 .color-sample {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
     display: inline-block;
+    margin-left: 8px;
+}
+ul#id_color {
+    list-style: none;
+    padding-left: 0;
+}
+form input, form textarea {
+    border: none;
+}
+form textarea:focus {
+    outline: none !important;
+    box-shadow: 3px 3px 5px #ccc;
+}
+form label {
+    font-weight: 400;
+}
+form #id_title {
+    font-size: 32px;
+    padding: 4px 8px;
+}
+form .fieldWrapper {
+    margin: 8px 0;
+}
+.add-note {
+    margin-bottom: 16px;
 }
 
 
@@ -73,8 +98,36 @@ footer div {
 
 /** GRIDSTACK **/
 
+.modal #id_content {
+    background-color:rgba(0, 0, 0, 0);
+    width: 100%;
+    resize: none;
+}
+.modal textarea:focus {
+    border: none;
+    overflow: auto;
+    outline: none;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
 .grid-stack .grid-stack-item-content {
     padding: 14px;
+    font-weight: 400;
+    text-align: left; !important
+}
+.grid-stack-item-content h1 {
+    margin-top: 8px;
+}
+.grid-stack-item-content.text-color-dark, .modal-content.text-color-dark {
+    /* Dark text */
+    color: #000;
+}
+.grid-stack-item-content.text-color-light, .modal-content.text-color-light {
+    /* Light text */
+    color: #fff;
 }
 
 

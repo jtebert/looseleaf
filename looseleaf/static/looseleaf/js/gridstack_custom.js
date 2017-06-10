@@ -40,7 +40,11 @@ $(function () {
         $('.grid-stack').gridstack();
 
         var grid = $('.grid-stack').data('gridstack');
+<<<<<<< HEAD
         this.grid.addWidget($('<div><div id="' + params.id + '" class="grid-stack-item-content" style=" color: #000000; text-align: center; background-color: #'+params.color+';" /><div/>'), params.x, params.y, params.width, params.height, true, null, null, null, null, params.id);
+=======
+        this.grid.addWidget($('<div><div id="' + params.id + '" class="grid-stack-item-content text-color-' + params.text_color + '" style="background-color: #'+params.color+';" /><div/>'), params.x, params.y, params.width, params.height, true, null, null, null, null, params.id);
+>>>>>>> origin/master
 
 
         console.log('Saving Grid');
@@ -78,12 +82,18 @@ $(function () {
         console.log('Rebuilding All Grids');
         var items = GridStackUI.Utils.sort(this.serializedData);
         _.each(items, function (node) {
+<<<<<<< HEAD
 //NEW STUFF HERE FOR THE DELETION BUTON!!!!!!!!!!!!!!!!!1111111
             this.grid.addWidget($('<div><div id="' + node.id + '" class="grid-stack-item-content"' +
                 'style="color: #2c3e50; text-align: center; background-color: #'+node.color+';">' +
 				'<button type="button" id="'+node.id+'" onclick="delete-note">Delete</button>'+
 				'<button type="button" id="'+node.id+'" onclick="edit-note">Edit</button>'+
 				'<br>'+node.content_html +
+=======
+            this.grid.addWidget($('<div data-toggle="modal" data-target="#modal'+node.id+'"><div id="' + node.id + '" class="grid-stack-item-content text-color-' + node.text_color + '"' +
+                'style="background-color: #'+node.color+';">' +
+				node.content_html +
+>>>>>>> origin/master
                 '<div/><div/>'), node.x, node.y, node.width, node.height, false, null, null, null, null, node.id);
             console.log(node)
             /*
@@ -95,6 +105,7 @@ $(function () {
         }, this);
 
         console.log('maxId = '+maxId.toString());
+        this.createModals(); //CREATE NEW MODALS EACH TIME WE UPDATE THE GRID
 
         changeHand = on;
 
@@ -137,6 +148,7 @@ $(function () {
 							height: gridData.height,
 							id: gridData.id,
 							color: node.color,
+                            text_color: node.text_color,
 							content_html: node.content_html
 						});
 						
@@ -172,6 +184,7 @@ $(function () {
                 height: params.height,
                 id: params.id,
                 color: params.color,
+                text_color: params.text_color,
                 content_html: params.content_html
             });
         $('#saved-data').val(JSON.stringify(this.serializedData, null, '    '));
@@ -188,6 +201,49 @@ $(function () {
         changeHand = on;
         return false;
     }.bind(this);
+
+
+
+
+
+
+    this.createModals= function(){
+
+						gridDataVec = _.map($('.grid-stack > .grid-stack-item:visible'), function (el) {
+							el = $(el);
+							var node = el.data('_gridstack_node');
+							return {
+								x: node.x,
+								y: node.y,
+								width: node.width,
+								height: node.height,
+								id: node.id
+							};
+						}, this);
+
+				var items = GridStackUI.Utils.sort(this.serializedData);
+
+				var divText='';
+				_.each(items, function (node) {
+
+
+			 divText=divText+'<div class="modal fade" id="modal'+node.id+'" role="dialog">'+
+                '<div class="modal-dialog" ><div class="modal-content text-color-' + node.text_color + '" style="background-color: #'+node.color+'">'+
+                '<div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button>'+
+                    '</div>'+
+                    '<div class="modal-body" id="modal'+node.id+'body">'+
+                      node.content_html+ //ADD CONTENT HTML HERE
+                    '</div>'+
+                    '<div class="modal-footer">'+
+                    '<button id = "'+node.id+'" type="button" class="btn btn-default" onclick="editNote('+node.id+')">EDIT</button></div></div></div></div>';
+                            }, this)
+
+				document.getElementById('addModals').innerHTML=divText
+
+				}.bind(this);
+
+
+
 
 
 
@@ -248,6 +304,7 @@ $(function () {
             // handle a successful response
             success: function (json) {
                 $('#id_content').val(''); // remove the value from the input
+                console.log("ADD BOX");
                 console.log(json); // log the returned json to the console
                 _this.addBox(json);
                 console.log("success"); // another sanity check
@@ -262,11 +319,67 @@ $(function () {
         });
     };
 
+<<<<<<< HEAD
 	
 //DELETE NOTES - GET FUNCTION RIGHT HERE!!!!=======================================================================================
 //==============================================================================================================================	
 	
 	    function delete_note(id) {
+=======
+
+     // Edit Post on submit
+    $('#note-edit-form').on('submit', function (event) {
+        event.preventDefault();
+        console.log("form submitted!")  // sanity check
+        console.log($('input[name="color"]:checked').val());
+        console.log("form submitted!")  // sanity check
+        edit_post();
+    });
+
+
+
+
+
+    function edit_post(id) {
+        $.ajax({
+            url: "/edit_note/", // the endpoint
+            type: "POST", // http method
+            data: {
+                content_raw: $('#id_content').val(),
+                color: $('input[name="color"]:checked').val(),
+                id: $('#note-id').val(),
+                // TODO: Add position/size
+            }, // data sent with the post request
+
+            // handle a successful response
+            success: function (json) {
+                $('#id_content').val(''); // remove the value from the input
+
+				var items = GridStackUI.Utils.sort(_this.serializedData);
+				_.each(items, function (node,i) {
+					if(id==node.id){
+						_this.serializedData[i] = json;
+						_this.loadGrid();
+					}
+
+				});
+
+                console.log("success"); // another sanity check
+            }.bind(this),
+
+            // handle a non-successful response
+            error: function (xhr, errmsg, err) {
+                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: " + errmsg +
+                    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    };
+
+
+
+    function get_note() {
+>>>>>>> origin/master
         $.ajax({
             url: "/delete_note/", // the endpoint
             type: "POST", // http method

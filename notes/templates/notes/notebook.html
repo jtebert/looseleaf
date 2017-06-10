@@ -8,8 +8,33 @@
 {% block content %}
     <h1 class="notebook-id" id="{{ notebook.pk }}">{{ notebook.title }}</h1>
 
+<<<<<<< HEAD
+=======
+    <div class="add-note">
+        <h2>Add note</h2>
+        <!-- Add note -->
+        <form method="POST" id="note-form">
+            {% csrf_token %}
+            <div class="fieldWrapper" id="note">
+                {{ form.content }}
+                {{ form.color }}
+            </div>
+            <div id="results"></div> <!-- errors go here -->
+            <input type="submit" value="Post" class="btn btn-primary">
+        </form>
+    </div>
+
+    <!-- Collaborators -->
+    <div class="collaborator-box">
+        {% for c in notebook.collaborators.items %}
+            {{ c.mugshot }} test
+        {% endfor %}
+    </div>
+
+>>>>>>> origin/master
     <!-- Gridstack -->
     <div class="container-fluid">
+        {% comment %}
         <h1>Serialization demo</h1>
         <div>
             <a class="btn btn-default" id="add-box" href="#">Add Note</a>
@@ -17,33 +42,29 @@
             <a class="btn btn-default" id="load-grid" href="#">Load Grid</a>
             <a class="btn btn-default" id="clear-grid" href="#">Clear Grid</a>
         </div>
+        {% endcomment %}
 
         <br/>
         <div class="grid-stack">
         </div>
 
+        {% comment %}
 		<br>
         <hr/>
         <textarea id="saved-data" cols="100" rows="20" readonly="readonly"></textarea>
+        {% endcomment %}
     </div>
 
     {# Temporarily display notes as list #}
-    <h1>Existing notes</h1>
+    {% comment %}<h1>Existing notes</h1>
     {% for n in notes %}
         <p>{{ n.content }}</p>
-    {% endfor %}
+    {% endfor %}{% endcomment %}
 
-    <h1>Add note</h1>
-    <!-- Add note -->
-    <form method="POST" id="note-form">
-        {% csrf_token %}
-        <div class="fieldWrapper" id="note">
-            {{ form.content }}
-            {{ form.color }}
-        </div>
-        <div id="results"></div> <!-- errors go here -->
-        <input type="submit" value="Post" class="tiny button">
-    </form>
+
+<div class="container" id='addModals'>
+</div>
+
 {% endblock %}
 
 {% block extra_js %}
@@ -60,4 +81,47 @@
     <script type="text/javascript" async
       src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
     </script>
+
+
+    <script>
+        editNote = function (id) {
+
+            console.log('EDIT THE NOTE ' + id);
+            edit_get(id)
+
+            return false;
+        };
+
+        function edit_get(id) {
+            $.ajax({
+                url: "/edit_note/", // the endpoint
+                type: "GET", // http method
+                data: {
+                    id: id,
+                    // TODO: Add position/size
+                }, // data sent with the post request
+
+                // handle a successful response
+                success: function (html) {
+                    $('#id_content').val(''); // remove the value from the input
+                    console.log(html);
+                    document.getElementById('modal'+id+'body').innerHTML=html;
+                    //CREATE POPUP MODAL
+
+
+                    console.log("success"); // another sanity check
+                }.bind(this),
+
+                // handle a non-successful response
+                error: function (xhr, errmsg, err) {
+                    $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: " + errmsg +
+                        " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+            });
+        }
+        ;
+
+    </script>
+
 {% endblock %}

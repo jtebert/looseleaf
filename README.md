@@ -1,53 +1,31 @@
-# Heroku Django Starter Template
+# Looseleaf
 
-An utterly fantastic project starter template for Django 1.10.
+## About
 
-## Features
+Looseleaf lets you keep a collaborative, organizable notebook of text, code snippets, and LaTeX math for teams and group projects. It was started at Hackbeanpot 2017. As students ourselves, we hope that this will be useful to others in our situation.
 
-- Production-ready configuration for Static Files, Database Settings, Gunicorn, etc.
-- Enhancements to Django's static file serving functionality via WhiteNoise.
-- Latest Python 3.6 runtime environment. 
+We started this at a hackathon and haven't fixed it from that yet. It's a cool concept, but not ready for real use yet. Content you add is currently viewable to the admins through the admin interface, so we **do not** recommend using it for any information you are remotely concerned about the privacy of. Also, the horrifying number of bugs means that you probably wouldn't like using this for anything yet, anyway. I'd classify it as very pre-alpha at this point.
 
-## How to Use
+## Current Features
+- Create private notebooks
+- Add notes to notebooks that are arrangeable, draggable, and resizable
+- Notes support Markdown text, LaTeX math, and code snippets
 
-To use this project, follow these steps:
+## Known Issues and Missing Features (there are many)
+- Adding collaborators when creating a notebook doesn't actually add them to the notebook
+- All users are publically listed in the collaborators section when creating a new notebook
+- No way to add or remove collaborators after a notebook is created
+- List of collaborators for a notebook isn't shown anywhere
+- The notebook color isn't used anywhere
+- No way to delete notes or notebooks after they are created.
+- Once a note is created, it can't be edited (the "Save" button on the edit form currently does nothing)
+- Note editing form doesn't expand to show all text of the note
+- No way to retrieve lost login information (need to set up emails through django-userena)
+- There is plenty to be left desired on most of the user interface
+- No syntax highlighting, fenced code blocks, or other extras in Markdown.
+- If notes are deleted or edited by another user, these changes are not visible to the other user without a page refresh. This will cause many problems if users are editing a notebook simultaneously. Replacing ajax with websockets should solve this issues but will require a major overhaul of the django backend.
+- Create some sort of contact and about pages on the website
 
-1. Create your working environment.
-2. Install Django (`$ pip install django`)
-3. Create a new project using this template
+## License
 
-## Creating Your Project
-
-Using this template to create a new Django app is easy::
-
-    $ django-admin.py startproject --template=https://github.com/heroku/heroku-django-template/archive/master.zip --name=Procfile helloworld
-
-(If this doesn't work on windows, replace `django-admin.py` with `django-admin`)
-
-You can replace ``helloworld`` with your desired project name.
-
-## Deployment to Heroku
-
-    $ git init
-    $ git add -A
-    $ git commit -m "Initial commit"
-
-    $ heroku create
-    $ git push heroku master
-
-    $ heroku run python manage.py migrate
-
-See also, a [ready-made application](https://github.com/heroku/python-getting-started), ready to deploy.
-
-## Using Python 2.7?
-
-Just update `runtime.txt` to `python-2.7.13` (no trailing spaces or newlines!).
-
-
-## License: MIT
-
-## Further Reading
-
-- [Gunicorn](https://warehouse.python.org/project/gunicorn/)
-- [WhiteNoise](https://warehouse.python.org/project/whitenoise/)
-- [dj-database-url](https://warehouse.python.org/project/dj-database-url/)
+This project is licensed under the [MIT License](license.md). If you would like to use or help develop it, please consider joining us in working on this project.

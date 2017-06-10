@@ -1,11 +1,13 @@
 import json
 import markdown
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.urlresolvers import reverse
+from django.template.loader import render_to_string
+from django.template import RequestContext
 
 from notes.utils import profile_from_request
 from notes.models import Notebook, Color, Note
@@ -30,6 +32,7 @@ def notebook(request, pk):
     # Page view for a specific notebook
     # Bulk of functionality goes here
     notebook = Notebook.objects.get(pk=pk)
+    #print 'colabs:', notebook.collaborators.all()
     notes = Note.objects.filter(notebook=notebook).order_by('x_pos')
     profile = profile_from_request(request)
     form = NoteForm()
@@ -54,7 +57,6 @@ def notebook(request, pk):
 @login_required
 def add_notebook(request):
     profile = profile_from_request(request)
-
     if request.method == 'POST':
         notebook_form = NotebookForm(request.POST)
         collab_emails = request.POST.get('collaborators').replace(' ', '').split(',')
@@ -63,9 +65,12 @@ def add_notebook(request):
         print collabs
         notebook_form.collaborators = collabs
         if notebook_form.is_valid():
+            print 'collaborators', notebook_form.cleaned_data['collaborators']
             notebook = notebook_form.save(commit=False)
             notebook.owner = profile_from_request(request)
-            notebook = notebook.save()
+            notebook.save()
+            notebook_form.save_m2m()
+            print 'saved collaborators:', notebook.collaborators
             messages.success(request, "Notebook added.")
             return HttpResponseRedirect(reverse("notes:index"))
     else:  # GET
@@ -123,7 +128,7 @@ def add_note(request):
         response_data['id'] = note.pk
         response_data['color'] = note.color.hex
         response_data['text_color'] = note.color.text_color
-        response_data['content_html'] = note.content
+        response_data['content_html'] = markdown.markdown(note.content)
 
         return JsonResponse(response_data)
 
@@ -142,17 +147,15 @@ def move_notes(request):
         return JsonResponse({"Hi": "mom"})
 
 def edit_note(request):
-    # Edit an existing note in the notebook
     if request.method == 'POST':
+        # Save edits to an existing note in the notebook
+        print "POST REQUEST"
         response_data = {}
         note = Note.objects.get(pk=request.POST.get('id'))
-        note.x_pos = request.POST.get('x')
-        note.y_pos = request.POST.get('y')
-        note.width = request.POST.get('width')
-        note.height = request.POST.get('height')
         note.color = Color.objects.get(pk=request.POST.get('color'))
         note.content = request.POST.get('content_raw')
         note.save()
+
         response_data['x'] = note.x_pos
         response_data['y'] = note.y_pos
         response_data['width'] = note.width
@@ -160,6 +163,15 @@ def edit_note(request):
         response_data['id'] = note.pk
         response_data['color'] = note.color.hex
         response_data['text_color'] = note.color.text_color
-        response_data['content_html'] = note.content
-
+        response_data['content_html'] = markdown.markdown(note.content)
         return JsonResponse(response_data)
+    else:
+        # Send back a form to edit the existing note
+        note_id = request.GET.get('id')
+        note = Note.objects.get(pk=note_id)
+        note_form = NoteForm(instance=note)
+        response = render_to_string('notes/note_form_modal.html',
+                                    {'form': note_form,
+                                     'note_id': note_id},
+                                    context_instance=RequestContext(request))
+        return HttpResponse(response)

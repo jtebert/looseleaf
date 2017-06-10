@@ -8,19 +8,17 @@
         {{ notebook_form.non_field_errors }}
         <div class="fieldWrapper">
             {{ notebook_form.title.errors }}
-            <label for="{{ notebook_form.title.id_for_label }}">Notebook Name:</label>
             {{ notebook_form.title }}
         </div>
         <div class="fieldWrapper">
             {{ notebook_form.color.errors }}
-            <label for="{{ notebook_form.color.id_for_label }}">Color:</label>
             {{ notebook_form.color }}
         </div>
         <div class="fieldWrapper">
             {{ notebook_form.collaborators.errors }}
-            <label for="{{ notebook_form.collaborators.id_for_label }}">Collaborators:</label>
+            <label for="{{ notebook_form.collaborators.id_for_label }}">Collaborators:</label><br/>
             {{ notebook_form.collaborators }}
         </div>
-        <input type="submit">
+        <input type="submit" class="btn btn-primary">
     </form>
 {% endblock %}

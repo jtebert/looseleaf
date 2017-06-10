@@ -1,5 +1,5 @@
 from django.contrib import admin
-from notes.models import Color, Note
+from notes.models import Color, Note, Notebook
 
 # Register your models here.
 
@@ -12,3 +12,9 @@ class NoteAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(Note, NoteAdmin)
+
+
+class NotebookAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Notebook, NotebookAdmin)
