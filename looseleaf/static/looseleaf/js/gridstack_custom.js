@@ -301,6 +301,58 @@ $(function () {
         });
     };
 
+
+     // Edit Post on submit
+    $('#note-edit-form').on('submit', function (event) {
+        event.preventDefault();
+        console.log("form submitted!")  // sanity check
+        console.log($('input[name="color"]:checked').val());
+        console.log("form submitted!")  // sanity check
+        edit_post();
+    });
+
+
+
+
+
+    function edit_post(id) {
+        $.ajax({
+            url: "/edit_note/", // the endpoint
+            type: "POST", // http method
+            data: {
+                content_raw: $('#id_content').val(),
+                color: $('input[name="color"]:checked').val(),
+                id: $('#note-id').val(),
+                // TODO: Add position/size
+            }, // data sent with the post request
+
+            // handle a successful response
+            success: function (json) {
+                $('#id_content').val(''); // remove the value from the input
+
+				var items = GridStackUI.Utils.sort(_this.serializedData);
+				_.each(items, function (node,i) {
+					if(id==node.id){
+						_this.serializedData[i] = json;
+						_this.loadGrid();
+					}
+
+				});
+
+                console.log("success"); // another sanity check
+            }.bind(this),
+
+            // handle a non-successful response
+            error: function (xhr, errmsg, err) {
+                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: " + errmsg +
+                    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    };
+
+
+
     function get_note() {
         $.ajax({
             url: "/get_notes/", // the endpoint
